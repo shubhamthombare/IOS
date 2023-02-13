@@ -1,0 +1,108 @@
+name: Alternate Build iOS IPA
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  IONIC_CLI_VERSION: 6.20.3
+  NODE_VERSION: 18.12.1
+  PROJECT_NAME: App
+  SCHEME_NAME: App
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        
+    - name: Set up Xcode
+      uses: maxim-lobanov/setup-xcode@v1.5.1
+       
+    - name: Install gpg
+      run: brew install gnupg
+    
+    - name: Setup provisioning profile
+      run: chmod +x ./.github/secrets/decrypt_secrets.sh
+      env:
+        IOS_PROFILE_KEY: ${{ secrets.IOS_PROFILE_KEY }} 
+    
+    - name: Install Ionic CLI
+      run: |
+        npm install -g ionic
+        ionic config set -g daemon.updates false
+    - name: Install dependencies
+      run: npm install npm@8.19.2 -g
+      
+    - name: Install Capacitor CLI
+      run: |
+        npm install -g @capacitor/cli@4.4.0
+        npm install -g @capacitor/ios@4.5.0
+        
+    - name: Install Cocoapods
+      run: sudo gem install cocoapods
+
+    - name: Cache Pods dependencies
+      uses: actions/cache@v1
+      with:
+          path: ios/Pods
+          key: ${{ runner.OS }}-pods-cache-${{ hashFiles('**/ios/Podfile.lock') }}
+          restore-keys: |
+            ${{ runner.OS }}-pods-cache-
+    - name : Install Legacy-peer-deps
+      run: sudo npm install react-scripts --legacy-peer-deps
+      
+    - name : Install awesome-cordova-plugins
+      run : sudo npm i @awesome-cordova-plugins/core    
+    
+    - name: Build iOS IPA
+      run: sudo npm run build-prod
+      env: 
+       CI: true
+       
+    - name: Capacitor commands   
+      run: |
+        npx cap sync ios
+        npx cap open ios      
+   
+   
+    - name: Build app
+      run: |
+          xcodebuild \
+           -project "$PROJECT_NAME.xcodeproj" \
+          -scheme "$SCHEME_NAME" \
+          -destination generic/platform=iOS \
+          -configuration Release \
+          -archivePath "$PROJECT_NAME.xcarchive" \
+          clean build archive
+          IPHONEOS_DEPLOYMENT_TARGET=13.0 \
+          PROVISIONING_PROFILE="profile" \
+          CODE_SIGN_IDENTITY="Apple Development: Indulekha Singh (J46QJZ7FLK)" 
+          DEVELOPMENT_TEAM='2A43T2JL46'
+            
+    - name: Export app
+      run: |
+         xcodebuild \
+          -exportArchive \
+          -archivePath "$PROJECT_NAME.xcarchive" \
+          -exportOptionsPlist exportOptions.plist \
+          -exportPath "$PROJECT_NAME"
+      env:
+        PROJECT_NAME: "$PROJECT_NAME"
+          
+          
+    - name: Upload IPA to Release
+      uses: actions/upload-artifact@v3
+      with:
+        name: "$PROJECT_NAME.ipa"
+        path: "$PROJECT_NAME/$PROJECT_NAME.ipa"
