@@ -6,8 +6,8 @@ on:
       - master
 
 env:
-  IONIC_CLI_VERSION: 6.20.8
-  NODE_VERSION: 19.5.0
+  IONIC_CLI_VERSION: 6.20.3
+  NODE_VERSION: 18.12.
   LC_ALL: en_US.UTF-8
   LANG: en_US.UTF-8
 
@@ -17,10 +17,10 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Node.js
-      uses: actions/setup-node@v1
+      uses: actions/setup-node@v3
       with:
         node-version: ${{ env.NODE_VERSION }}
     
@@ -37,11 +37,13 @@ jobs:
         npm install -g ionic
         ionic config set -g daemon.updates false
     - name: Install dependencies
-      run: npm install npm@9.3.1 -g
+      run: npm install npm@8.19.2 -g
       
     - name: Install Capacitor CLI
-      run: npm install -g @capacitor/cli@4.4.0
-      
+      run: |
+        npm install -g @capacitor/cli@4.4.0
+        npm install -g @capacitor/ios@4.5.0
+        
     - name: Install Cocoapods
       run: sudo gem install cocoapods
 
