@@ -3,7 +3,7 @@ name: Alternate Build iOS IPA
 on:
   push:
     branches:
-      - main
+      - master
 
 env:
   IONIC_CLI_VERSION: 6.20.8
