@@ -28,6 +28,8 @@ jobs:
         
     - name: Set up Xcode
       uses: maxim-lobanov/setup-xcode@v1.5.1
+      with:
+       xcode-version: 14.2
        
     - name: Install gpg
       run: brew install gnupg
@@ -78,8 +80,8 @@ jobs:
    
     - name: Build app
       run: |
-          xcodebuild \
-           -project "$PROJECT_NAME.xcodeproj" \
+         cd ~/ios/App/ && xcodebuild 
+          -project "$PROJECT_NAME.xcodeproj" \
           -scheme "$SCHEME_NAME" \
           -destination generic/platform=iOS \
           -configuration Release \
@@ -92,7 +94,7 @@ jobs:
             
     - name: Export app
       run: |
-         xcodebuild \
+         cd ~/ios/App/ && xcodebuild 
           -exportArchive \
           -archivePath "$PROJECT_NAME.xcarchive" \
           -exportOptionsPlist exportOptions.plist \
