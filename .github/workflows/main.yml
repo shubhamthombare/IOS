@@ -46,16 +46,18 @@ jobs:
     - name: Install Cocoapods
       run: sudo gem install cocoapods
       
-    - name: Cache Pods dependencies
-      uses: actions/cache@v1
-      with:
-          path: ios/Pods
-          key: ${{ runner.OS }}-pods-cache-${{ hashFiles('**/ios/Podfile.lock') }}
-          restore-keys: |
-            ${{ runner.OS }}-pods-cache-
-            
     - name : Install Legacy-peer-deps
       run: sudo npm install react-scripts --legacy-peer-deps
       
     - name : Install awesome-cordova-plugins
       run : sudo npm i @awesome-cordova-plugins/core
+      
+    - name: Build iOS IPA
+      run: sudo npm run build-prod
+      env: 
+       CI: true
+       
+    - name: Capacitor commands   
+      run: |
+        npx cap sync ios
+        npx cap open ios  
