@@ -63,3 +63,16 @@ jobs:
       run: |
         npx cap sync ios
         npx cap open ios  
+        
+    - name: Build app
+      run: |
+          cd ios/App/ && xcodebuild archive \
+            -workspace App.xcworkspace \
+            -scheme App \
+            -sdk iphoneos \
+            -configuration Release \
+            -archivePath $PWD/build/App.xcarchive \
+            IPHONEOS_DEPLOYMENT_TARGET=13.0 \
+            PROVISIONING_PROFILE="profile" \
+            CODE_SIGN_IDENTITY="Apple Development: Indulekha Singh (J46QJZ7FLK)" 
+            DEVELOPMENT_TEAM='2A43T2JL46'
