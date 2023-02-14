@@ -82,7 +82,7 @@ jobs:
    
     - name: Build app
       run: |
-         cd ~/ios/App/ && xcodebuild 
+         cd ios/App/ && xcodebuild 
           -project "$PROJECT_NAME.xcodeproj" \
           -scheme "$SCHEME_NAME" \
           -destination generic/platform=iOS \
@@ -97,7 +97,7 @@ jobs:
             
     - name: Export app
       run: |
-         cd ~/ios/App/ && xcodebuild 
+         cd ios/App/ && xcodebuild 
           -exportArchive \
           -archivePath "$PROJECT_NAME.xcarchive" \
           -exportOptionsPlist exportOptions.plist \
