@@ -28,7 +28,9 @@ jobs:
       run: brew reinstall gnupg
       
     - name: Setup provisioning profile
-      run: chmod +x ./.github/secrets/decrypt_secrets.sh
+      run: |
+        chmod +x ./.github/secrets/decrypt_secrets.sh
+        ./.github/secrets/decrypt_secrets.sh
       env:
         IOS_PROFILE_KEY: ${{ secrets.IOS_PROFILE_KEY }} 
     
