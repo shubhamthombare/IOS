@@ -8,6 +8,8 @@ on:
 env:
   IONIC_CLI_VERSION: 6.20.3
   NODE_VERSION: 18.12.1
+  CODE_SIGN_IDENTITY: "Apple Development: Indulekha Singh (J46QJZ7FLK)"
+  PROVISIONING_PROFILE: "profile"
   PROJECT_NAME: App
   SCHEME_NAME: App
   LC_ALL: en_US.UTF-8
@@ -90,7 +92,8 @@ jobs:
           IPHONEOS_DEPLOYMENT_TARGET=13.0 \
           PROVISIONING_PROFILE="profile" \
           CODE_SIGN_IDENTITY="Apple Development: Indulekha Singh (J46QJZ7FLK)" 
-          DEVELOPMENT_TEAM='2A43T2JL46'
+          PRODUCT_BUNDLE_IDENTIFIER="ai.actyv.enterprise"
+         #DEVELOPMENT_TEAM='2A43T2JL46'
             
     - name: Export app
       run: |
