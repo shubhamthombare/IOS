@@ -53,3 +53,9 @@ jobs:
           key: ${{ runner.OS }}-pods-cache-${{ hashFiles('**/ios/Podfile.lock') }}
           restore-keys: |
             ${{ runner.OS }}-pods-cache-
+            
+    - name : Install Legacy-peer-deps
+      run: sudo npm install react-scripts --legacy-peer-deps
+      
+    - name : Install awesome-cordova-plugins
+      run : sudo npm i @awesome-cordova-plugins/core
