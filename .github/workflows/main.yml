@@ -26,3 +26,16 @@ jobs:
     
     - name: Install gpg
       run: brew install gnupg
+      
+    - name: Setup provisioning profile
+      run: chmod +x ./.github/secrets/decrypt_secrets.sh
+      env:
+        IOS_PROFILE_KEY: ${{ secrets.IOS_PROFILE_KEY }} 
+    
+    - name: Install Ionic CLI
+      run: |
+        npm install -g ionic
+        ionic config set -g daemon.updates false
+        
+    - name: Install dependencies
+      run: npm install npm@9.3.1 -g
