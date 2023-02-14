@@ -1,0 +1,28 @@
+name: Alternate Build iOS IPA
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  IONIC_CLI_VERSION: 6.20.3
+  NODE_VERSION: 18.12.
+  LC_ALL: en_US.UTF-8
+  LANG: en_US.UTF-8
+
+jobs:
+  build:
+    runs-on: macOS-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+    
+    - name: Install gpg
+      run: brew install gnupg
