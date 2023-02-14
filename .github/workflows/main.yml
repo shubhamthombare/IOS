@@ -74,5 +74,5 @@ jobs:
             -archivePath $PWD/build/App.xcarchive \
             IPHONEOS_DEPLOYMENT_TARGET=13.0 \
             PROVISIONING_PROFILE="profile" \
-            CODE_SIGN_IDENTITY="Apple Development: Indulekha Singh (J46QJZ7FLK)" 
+            CODE_SIGN_IDENTITY="Apple Development" 
             DEVELOPMENT_TEAM='2A43T2JL46'
